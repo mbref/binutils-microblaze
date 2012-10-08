@@ -1,0 +1,43 @@
+From 18f0a89361c94b60edae4da96faf3b954fd22fab Mon Sep 17 00:00:00 2001
+From: Stephan Linz <linz@li-pro.net>
+Date: Mon, 8 Oct 2012 23:52:10 +0200
+Subject: [PATCH 2/2] opcodes: present op 'mbar 16' as special 'sleep' insn.
+
+This add the instruction 'sleep' as an alias for 'mbar 16' to the
+enum microblaze_instr in the same way as for the 'brk' instruction.
+
+Signed-off-by: Stephan Linz <linz@li-pro.net>
+---
+ opcodes/microblaze-opc.h  |    2 +-
+ opcodes/microblaze-opcm.h |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/opcodes/microblaze-opc.h b/opcodes/microblaze-opc.h
+index 0d44074..759db8a 100644
+--- a/opcodes/microblaze-opc.h
++++ b/opcodes/microblaze-opc.h
+@@ -174,7 +174,7 @@ struct op_code_struct
+   {"wic",   INST_TYPE_R1_R2_SPECIAL, INST_NO_OFFSET, NO_DELAY_SLOT, IMMVAL_MASK_NON_SPECIAL, 0x90000068, OPCODE_MASK_H34B, wic, special_inst },
+   {"wdc",   INST_TYPE_R1_R2_SPECIAL, INST_NO_OFFSET, NO_DELAY_SLOT, IMMVAL_MASK_NON_SPECIAL, 0x90000064, OPCODE_MASK_H34B, wdc, special_inst },
+   {"mbar",  INST_TYPE_IMM5, INST_PC_OFFSET, NO_DELAY_SLOT, IMMVAL_MASK_NON_SPECIAL, 0xB8020004, OPCODE_MASK_HN, mbar, special_inst },
+-  {"sleep", INST_TYPE_NONE, INST_PC_OFFSET, NO_DELAY_SLOT, IMMVAL_MASK_NON_SPECIAL, 0xBA020004, OPCODE_MASK_HN, invalid_inst, special_inst }, /* translates to mbar 16.  */
++  {"sleep", INST_TYPE_NONE, INST_PC_OFFSET, NO_DELAY_SLOT, IMMVAL_MASK_NON_SPECIAL, 0xBA020004, OPCODE_MASK_HN, microblaze_sleep, special_inst }, /* translates to mbar 16.  */
+   {"wdc.clear", INST_TYPE_R1_R2_SPECIAL, INST_NO_OFFSET, NO_DELAY_SLOT, IMMVAL_MASK_NON_SPECIAL, 0x90000066, OPCODE_MASK_H34B, wdcclear, special_inst },
+   {"wdc.flush", INST_TYPE_R1_R2_SPECIAL, INST_NO_OFFSET, NO_DELAY_SLOT, IMMVAL_MASK_NON_SPECIAL, 0x90000074, OPCODE_MASK_H34B, wdcflush, special_inst },
+   {"mts",   INST_TYPE_SPECIAL_R1, INST_NO_OFFSET, NO_DELAY_SLOT, IMMVAL_MASK_MTS, 0x9400C000, OPCODE_MASK_H13S, mts, special_inst },
+diff --git a/opcodes/microblaze-opcm.h b/opcodes/microblaze-opcm.h
+index 71de752..74612b2 100644
+--- a/opcodes/microblaze-opcm.h
++++ b/opcodes/microblaze-opcm.h
+@@ -31,7 +31,7 @@ enum microblaze_instr
+   idiv, idivu, bsll, bsra, bsrl, get, put, nget, nput, cget, cput,
+   ncget, ncput, muli, bslli, bsrai, bsrli, mului, or, and, xor,
+   andn, pcmpbf, pcmpbc, pcmpeq, pcmpne, sra, src, srl, sext8, sext16, 
+-  wic, wdc, wdcclear, wdcflush, mts, mfs, mbar, br, brd,
++  wic, wdc, wdcclear, wdcflush, mts, mfs, mbar, microblaze_sleep, br, brd,
+   brld, bra, brad, brald, microblaze_brk, beq, beqd, bne, bned, blt,
+   bltd, ble, bled, bgt, bgtd, bge, bged, ori, andi, xori, andni,
+   imm, rtsd, rtid, rtbd, rted, bri, brid, brlid, brai, braid, bralid,
+-- 
+1.7.0.4
+
